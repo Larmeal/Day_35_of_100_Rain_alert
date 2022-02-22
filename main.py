@@ -1,11 +1,13 @@
 import requests
+import os
 from twilio.rest import Client
+from twilio.http.http_client import TwilioHttpClient
 
 
-api_key = "ad098dc91d0eba488c4f0982578e8004"
+api_key = os.environ.get("MY_API_KEY")
 
 account_sid = 'AC4c525788499cf21ebc1db315cfb429dc'
-auth_token = 'fb9e8a8322d74aedf3ef66f95448c657'
+auth_token = os.environ.get("MY_TOKEN")
 
 document = {
     "lat": 13.756550,
@@ -21,14 +23,17 @@ data = response.json()
 weather_data_record = []
 rain = False
 
-for i in range(12):
-    weather_id = data["hourly"][i]["weather"][0]["id"] 
+for i in range(18):
+    weather_id = data["hourly"][i]["weather"][0]["id"]
     weather_data_record.append(weather_id)
 
-while not rain:    
+while not rain:
     if weather_id in weather_data_record and weather_id < 700:
         rain = True
-        client = Client(account_sid, auth_token)
+        proxy_client = TwilioHttpClient()
+        proxy_client.session.proxies = {'https': os.environ['https_proxy']}
+
+        client = Client(account_sid, auth_token, http_client=proxy_client)
 
         message = client.messages \
         .create(
@@ -38,3 +43,4 @@ while not rain:
         )
 
     print(message.status)
+
