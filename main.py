@@ -3,12 +3,6 @@ import os
 from twilio.rest import Client
 from twilio.http.http_client import TwilioHttpClient
 
-
-api_key = os.environ.get("MY_API_KEY")
-
-account_sid = 'AC4c525788499cf21ebc1db315cfb429dc'
-auth_token = os.environ.get("MY_TOKEN")
-
 document = {
     "lat": 13.756550,
     "lon": 100.523253,
