@@ -1,7 +1,8 @@
 import requests
-import os
 from twilio.rest import Client
 from twilio.http.http_client import TwilioHttpClient
+
+# แตกต่างจาก file เดิม
 
 document = {
     "lat": 13.756550,
